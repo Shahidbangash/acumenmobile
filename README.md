@@ -1,6 +1,13 @@
-# acumenmobile
+# Acumen Mobile
 
 Mobile APP for Accumen.
+
+### Contributers
+
+Developer Name  | Github Link
+------------- | -------------
+Shahid Banghash  | [Shahid Bangash](https://github.com/Shahidbangash)
+Moqeet ul Hassan  | [Moqeet ul Hassan](https://github.com/MoqeetUlHassan)
 
 ## Guidlines for Developers
 
