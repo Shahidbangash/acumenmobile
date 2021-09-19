@@ -1,3 +1,4 @@
+import 'package:acumenmobile/reusableFunction/FirebaseAuthentication.dart';
 import 'package:flutter/material.dart';
 
 //  This is the Home Screen
@@ -14,6 +15,22 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            getCurrentUser() != null
+                ? ListTile(
+                    leading: Icon(Icons.exit_to_app),
+                    onTap: () {
+                      logOut();
+                    },
+                  )
+                : ListTile(
+                    leading: Icon(Icons.login),
+                  ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
