@@ -1,3 +1,4 @@
+import 'package:acumenmobile/Routes/goToRoutes.dart';
 import 'package:acumenmobile/Routes/routesConstants.dart';
 import 'package:acumenmobile/Theme/colors.dart';
 import 'package:acumenmobile/Theme/fontStyles.dart';
@@ -155,7 +156,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                         loading = false;
                                         formKey.currentState!.reset();
                                       });
-                                      if (value == "success") {}
+                                      if (value == "success") {
+                                        goToMainScreen();
+                                      }
                                     });
                                   } else {
                                     // show user an error message

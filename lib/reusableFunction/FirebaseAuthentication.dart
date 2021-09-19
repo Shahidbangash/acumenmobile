@@ -1,5 +1,6 @@
 // this file will deal with Login Singn up and get Current User
 
+import 'package:acumenmobile/Routes/goToRoutes.dart';
 import 'package:acumenmobile/Routes/routesConstants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -38,5 +39,19 @@ Future<String> signup({
       "displayName": getCurrentUser()!.displayName,
     });
     return "success";
+  });
+}
+
+Future<String> login({
+  required String email,
+  required String password,
+}) async {
+  return await FirebaseAuth.instance
+      .signInWithEmailAndPassword(email: email, password: password)
+      .then((value) {
+    goToMainScreen();
+    return "stri";
+  }).catchError((onError) {
+    return onError.toString();
   });
 }

@@ -3,6 +3,8 @@ import 'package:acumenmobile/Theme/colors.dart';
 import 'package:acumenmobile/Theme/fontStyles.dart';
 import 'package:acumenmobile/reusableComponents/customTextFormField.dart';
 import 'package:acumenmobile/reusableComponents/primaryButton.dart';
+import 'package:acumenmobile/reusableComponents/validator.dart';
+import 'package:acumenmobile/reusableFunction/FirebaseAuthentication.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -104,10 +106,12 @@ class LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         TextFormFieldCustom(
-                          validator: (password) {
-                            if (password!.isEmpty) {
-                              return "Please enter email";
-                            }
+                          validator: (email) {
+                            return isValidEmail(
+                              email: email.toString(),
+                            )
+                                ? null
+                                : "Please enter valid email";
                           },
                           controller: emailController,
                           keyboardType: TextInputType.visiblePassword,
@@ -145,7 +149,16 @@ class LoginScreenState extends State<LoginScreen> {
                                 onTap: () {
                                   if (formKey.currentState!.validate()) {
                                     setState(() {
-                                      // loading = true;
+                                      loading = true;
+                                    });
+                                    login(
+                                            email: emailController.text,
+                                            password: passwordController.text)
+                                        .then((value) {
+                                      setState(() {
+                                        loading = false;
+                                      });
+                                      print("Value is $value");
                                     });
                                   } else {
                                     // show user an error message

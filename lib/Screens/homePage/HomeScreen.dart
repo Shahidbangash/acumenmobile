@@ -18,6 +18,15 @@ class _HomePageState extends State<HomePage> {
       drawer: Drawer(
         child: ListView(
           children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(getCurrentUser() != null
+                  ? getCurrentUser()!.email ?? "email not provided"
+                  : "Login to view Account"),
+            ),
+            // ),
             getCurrentUser() != null
                 ? ListTile(
                     leading: Icon(Icons.exit_to_app),
