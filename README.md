@@ -2,7 +2,7 @@
 
 Mobile APP for Accumen.
 
-### Contributers
+## Contributers
 
 Developer Name  | Github Link
 ------------- | -------------
@@ -21,5 +21,18 @@ Moqeet ul Hassan  | [Moqeet ul Hassan](https://github.com/MoqeetUlHassan)
 8. Always leave comment in code so that other developers understands it.
 9. Before starting project please go through all the files and see comments in file to understand project structure.
 
+### Important files to be considered
 
-### Important files to be considered 
+1. All files in route directory.
+
+2. Authentication.dart . this file will handle user managment.
+
+### Screenshots
+
+#### SigninScreen
+
+![Sign in Screen](../acumenmobile/screenshot/SigninScreen.jpeg)
+
+#### SignupScreen
+
+![Sign up Screen](../acumenmobile/screenshot/SignupScreen.jpeg)
