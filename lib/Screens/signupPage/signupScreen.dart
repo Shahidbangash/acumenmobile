@@ -1,9 +1,9 @@
-import 'package:acumenmobile/Routes/goToRoutes.dart';
 import 'package:acumenmobile/Routes/routesConstants.dart';
 import 'package:acumenmobile/Theme/colors.dart';
 import 'package:acumenmobile/Theme/fontStyles.dart';
 import 'package:acumenmobile/reusableComponents/customTextFormField.dart';
 import 'package:acumenmobile/reusableComponents/primaryButton.dart';
+import 'package:acumenmobile/reusableComponents/validator.dart';
 import 'package:acumenmobile/reusableFunction/FirebaseAuthentication.dart';
 import 'package:flutter/material.dart';
 
@@ -103,11 +103,11 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                         TextFormFieldCustom(
-                          validator: (email) {
-                            if (email!.isEmpty) {
-                              return "Please enter email";
-                            }
-                          },
+                          validator: (String? email) => isValidEmail(
+                            email: email.toString(),
+                          )
+                              ? null
+                              : "Enter Valid Email",
                           controller: emailController,
                           keyboardType: TextInputType.visiblePassword,
                         ),
@@ -155,11 +155,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                         loading = false;
                                         formKey.currentState!.reset();
                                       });
-                                      if (value == "success") {
-                                        goToMainScreen();
-                                      } else {
-                                        // TODO: Show Popup
-                                      }
+                                      if (value == "success") {}
                                     });
                                   } else {
                                     // show user an error message
