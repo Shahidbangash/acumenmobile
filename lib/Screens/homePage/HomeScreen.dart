@@ -21,12 +21,17 @@ class _HomePageState extends State<HomePage> {
             getCurrentUser() != null
                 ? ListTile(
                     leading: Icon(Icons.exit_to_app),
+                    title: Text("Log out"),
                     onTap: () {
                       logOut();
                     },
                   )
                 : ListTile(
                     leading: Icon(Icons.login),
+                    title: Text("Log in"),
+                    onTap: () {
+                      login();
+                    },
                   ),
           ],
         ),

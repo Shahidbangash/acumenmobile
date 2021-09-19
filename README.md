@@ -22,4 +22,4 @@ Moqeet ul Hassan  | [Moqeet ul Hassan](https://github.com/MoqeetUlHassan)
 9. Before starting project please go through all the files and see comments in file to understand project structure.
 
 
-### Important files to be considered thorught 
+### Important files to be considered 
