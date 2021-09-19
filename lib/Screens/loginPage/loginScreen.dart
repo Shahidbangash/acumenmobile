@@ -99,9 +99,18 @@ class LoginScreenState extends State<LoginScreen> {
                         Container(
                           margin: const EdgeInsets.only(left: 4.0, top: 24),
                           child: Text(
-                            'Phone Number',
+                            'Email',
                             style: signupFormLabelStyle,
                           ),
+                        ),
+                        TextFormFieldCustom(
+                          validator: (password) {
+                            if (password!.isEmpty) {
+                              return "Please enter email";
+                            }
+                          },
+                          controller: emailController,
+                          keyboardType: TextInputType.visiblePassword,
                         ),
 
                         Container(
