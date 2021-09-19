@@ -1,8 +1,10 @@
+import 'package:acumenmobile/Routes/goToRoutes.dart';
 import 'package:acumenmobile/Routes/routesConstants.dart';
 import 'package:acumenmobile/Theme/colors.dart';
 import 'package:acumenmobile/Theme/fontStyles.dart';
 import 'package:acumenmobile/reusableComponents/customTextFormField.dart';
 import 'package:acumenmobile/reusableComponents/primaryButton.dart';
+import 'package:acumenmobile/reusableFunction/FirebaseAuthentication.dart';
 import 'package:flutter/material.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -142,7 +144,22 @@ class _SignupScreenState extends State<SignupScreen> {
                                 onTap: () {
                                   if (formKey.currentState!.validate()) {
                                     setState(() {
-                                      // loading = true;
+                                      loading = true;
+                                    });
+                                    signup(
+                                            email: emailController.text,
+                                            password: passwordController.text,
+                                            name: nameController.text)
+                                        .then((value) {
+                                      setState(() {
+                                        loading = false;
+                                        formKey.currentState!.reset();
+                                      });
+                                      if (value == "success") {
+                                        goToMainScreen();
+                                      } else {
+                                        // TODO: Show Popup
+                                      }
                                     });
                                   } else {
                                     // show user an error message

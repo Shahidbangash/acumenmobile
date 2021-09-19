@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
                     leading: Icon(Icons.login),
                     title: Text("Log in"),
                     onTap: () {
-                      login();
+                      goToLoginScreen();
                     },
                   ),
           ],
