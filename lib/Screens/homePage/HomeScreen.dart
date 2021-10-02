@@ -5,6 +5,7 @@ import 'package:acumenmobile/Theme/colors.dart';
 import 'package:acumenmobile/reusableComponents/confirmationDialog.dart';
 import 'package:acumenmobile/reusableComponents/drawer.dart';
 import 'package:acumenmobile/reusableFunction/createImageStream.dart';
+import 'package:acumenmobile/reusableFunction/detectFace.dart';
 import 'package:acumenmobile/utils/const.dart';
 import 'package:export_video_frame/export_video_frame.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,7 +27,7 @@ class _HomePageState extends State<HomePage> {
 // final digitalInkRecogniser = GoogleMlKit.vision.digitalInkRecogniser();
   final faceDetector = GoogleMlKit.vision.faceDetector();
   final imageLabeler = GoogleMlKit.vision.imageLabeler();
-  InputImage? inputImage;
+  // InputImage? inputImage;
   Stream<File>? imagesStream;
 // final poseDetector = GoogleMlKit.vision.poseDetector();
 // final textDetector = GoogleMlKit.vision.textDetector();
@@ -57,7 +58,10 @@ class _HomePageState extends State<HomePage> {
     ImagePicker()
         .pickVideo(
       source: ImageSource.gallery,
-      maxDuration: duration ?? Duration(seconds: 60),
+      maxDuration: duration ??
+          Duration(
+            seconds: 600,
+          ),
     )
         .then((value) {
       setState(() {
@@ -98,145 +102,192 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: backgroundColor,
-      child: SafeArea(
-        child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: primaryColorAndPrimaryButtonColor,
-            ),
-            drawer: CustomDrawer(),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: StreamBuilder<File>(
-                      stream: imagesStream,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          print("Image Data is ${snapshot.data}");
-                          return SizedBox(
-                            height: height * 0.3,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image(
-                                fit: BoxFit.cover,
-                                image: FileImage(
-                                  File(
-                                    snapshot.data!.path,
+    return RefreshIndicator(
+      color: Colors.black,
+      onRefresh: () async {
+        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(),
+          ),
+        );
+      },
+      child: Container(
+        color: backgroundColor,
+        child: SafeArea(
+          child: Scaffold(
+              appBar: AppBar(
+                backgroundColor: primaryColorAndPrimaryButtonColor,
+              ),
+              drawer: CustomDrawer(),
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: StreamBuilder<File>(
+                        stream: imagesStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            print("Image Data is ${snapshot.data}");
+                            detectFaces(
+                              inputImage: InputImage.fromFilePath(
+                                snapshot.data!.path,
+                              ),
+                            );
+                            return Column(
+                              children: [
+                                SizedBox(
+                                  height: height * 0.3,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: Image(
+                                      fit: BoxFit.cover,
+                                      image: FileImage(
+                                        File(
+                                          snapshot.data!.path,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
+                                // Result of image will be here
+
+                                FutureBuilder(
+                                  future: detectFaces(
+                                    inputImage: InputImage.fromFilePath(
+                                      snapshot.data!.path,
+                                    ),
+                                  ),
+                                  builder: (context, faceResult) {
+                                    if (faceResult.hasData) {
+                                      return Container(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          faceResult.data.toString(),
+                                        ),
+                                      );
+                                    } else {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                  },
+                                ),
+
+                                // Result of image ends here
+                              ],
+                            );
+                          } else {
+                            return Container(
+                              child: Text("No video Selected Yet"),
+                            );
+                          }
+                        },
+                      ),
+                    )
+                  ],
+                  // children: [widgetOptions.elementAt(selectedIndex)],
+                ),
+              ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  showCustomDialog(
+                    context: context,
+                    buttonList: [
+                      Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10.0))),
+                        child: Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                pickImage(imageSource: ImageSource.gallery);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("Pick Image from Gallery"),
                               ),
                             ),
-                          );
-                        } else {
-                          return Container(
-                            child: Text("No video Selected Yet"),
-                          );
-                        }
-                      },
-                    ),
-                  )
-                ],
-                // children: [widgetOptions.elementAt(selectedIndex)],
-              ),
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                showCustomDialog(
-                  context: context,
-                  buttonList: [
-                    Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10.0))),
-                      child: Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              pickImage(imageSource: ImageSource.gallery);
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Pick Image from Gallery"),
+                            Divider(),
+                            InkWell(
+                              onTap: () {
+                                pickImage(imageSource: ImageSource.camera);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("Pick Image From Camera"),
+                              ),
                             ),
-                          ),
-                          Divider(),
-                          InkWell(
-                            onTap: () {
-                              pickImage(imageSource: ImageSource.camera);
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Pick Image From Camera"),
+                            Divider(),
+                            InkWell(
+                              onTap: () {
+                                pickVideo();
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("Pick Video From Gallery"),
+                              ),
                             ),
-                          ),
-                          Divider(),
-                          InkWell(
-                            onTap: () {
-                              pickVideo();
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Pick Video From Gallery"),
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ],
-                );
-              },
-              backgroundColor: white,
-              child: Icon(
-                CupertinoIcons.add,
-                color: black,
-                size: 33,
-              ), //icon inside button
-              elevation: 33,
-            ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            bottomNavigationBar: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              enableFeedback: true,
-              backgroundColor: primaryColorAndPrimaryButtonColor,
-              selectedItemColor: Colors.white,
-              unselectedItemColor: Colors.white.withOpacity(.60),
-              selectedFontSize: 14,
-              unselectedFontSize: 14,
-              currentIndex: selectedIndex,
-              onTap: (value) {
-                setState(() {
-                  selectedIndex = value;
-                });
-                // Respond to item press.
-              },
-              items: [
-                BottomNavigationBarItem(
-                  label: "Home",
-                  icon: Icon(CupertinoIcons.home),
-                ),
-                BottomNavigationBarItem(
-                  label: 'History',
-                  icon: Icon(CupertinoIcons.hand_draw),
-                ),
-                BottomNavigationBarItem(
-                  label: 'Notification',
-                  icon: Icon(CupertinoIcons.bell),
-                ),
-                BottomNavigationBarItem(
-                  label: 'Profile',
-                  icon: Icon(CupertinoIcons.settings),
-                ),
-              ],
-            )),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  );
+                },
+                backgroundColor: white,
+                child: Icon(
+                  CupertinoIcons.add,
+                  color: black,
+                  size: 33,
+                ), //icon inside button
+                elevation: 33,
+              ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              bottomNavigationBar: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                enableFeedback: true,
+                backgroundColor: primaryColorAndPrimaryButtonColor,
+                selectedItemColor: Colors.white,
+                unselectedItemColor: Colors.white.withOpacity(.60),
+                selectedFontSize: 14,
+                unselectedFontSize: 14,
+                currentIndex: selectedIndex,
+                onTap: (value) {
+                  setState(() {
+                    selectedIndex = value;
+                  });
+                  // Respond to item press.
+                },
+                items: [
+                  BottomNavigationBarItem(
+                    label: "Home",
+                    icon: Icon(CupertinoIcons.home),
+                  ),
+                  BottomNavigationBarItem(
+                    label: 'History',
+                    icon: Icon(CupertinoIcons.hand_draw),
+                  ),
+                  BottomNavigationBarItem(
+                    label: 'Notification',
+                    icon: Icon(CupertinoIcons.bell),
+                  ),
+                  BottomNavigationBarItem(
+                    label: 'Profile',
+                    icon: Icon(CupertinoIcons.settings),
+                  ),
+                ],
+              )),
+        ),
       ),
     );
   }
