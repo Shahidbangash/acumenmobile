@@ -54,7 +54,11 @@ class _HomePageState extends State<HomePage> {
       maxDuration: duration ?? Duration(seconds: 60),
     )
         .then((value) {
-      return null;
+      imagesStream = ExportVideoFrame.exportImagesFromFile(
+        File(value!.path),
+        const Duration(milliseconds: 500),
+        3.14 / 2,
+      );
     });
   }
 
@@ -129,7 +133,9 @@ class _HomePageState extends State<HomePage> {
                             ),
                           );
                         } else {
-                          return Container();
+                          return Container(
+                            child: Text("No video Selected Yet"),
+                          );
                         }
                       },
                     ),
