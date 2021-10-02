@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:acumenmobile/Theme/colors.dart';
 import 'package:acumenmobile/reusableComponents/confirmationDialog.dart';
 import 'package:acumenmobile/reusableComponents/drawer.dart';
+import 'package:acumenmobile/reusableFunction/createImageStream.dart';
 import 'package:acumenmobile/utils/const.dart';
 import 'package:export_video_frame/export_video_frame.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,11 +40,16 @@ class _HomePageState extends State<HomePage> {
   void pickImage({ImageSource imageSource = ImageSource.gallery}) {
     ImagePicker()
         .pickImage(
-          source: imageSource,
-        )
+      source: imageSource,
+    )
         .then(
-          (value) async {},
-        );
+      (value) async {
+        Navigator.of(context).pop();
+        setState(() {
+          imagesStream = createImageStream(xFile: value);
+        });
+      },
+    );
   }
 
   void pickVideo(
@@ -54,11 +60,13 @@ class _HomePageState extends State<HomePage> {
       maxDuration: duration ?? Duration(seconds: 60),
     )
         .then((value) {
-      imagesStream = ExportVideoFrame.exportImagesFromFile(
-        File(value!.path),
-        const Duration(milliseconds: 500),
-        3.14 / 2,
-      );
+      setState(() {
+        Navigator.of(context).pop();
+        imagesStream = ExportVideoFrame.exportImagesFromFile(
+          File(value!.path), const Duration(milliseconds: 500), 0,
+          // 3.14 / 2,
+        );
+      });
     });
   }
 
@@ -82,6 +90,13 @@ class _HomePageState extends State<HomePage> {
   ];
 
   @override
+  void dispose() {
+    super.dispose();
+    faceDetector.close();
+    imageLabeler.close();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       color: backgroundColor,
@@ -94,30 +109,6 @@ class _HomePageState extends State<HomePage> {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  inputImage != null
-                      ? Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Image(
-                            image: FileImage(
-                              File(
-                                inputImage!.filePath.toString(),
-                              ),
-                            ),
-                          ),
-                        )
-                      : Center(
-                          child: Container(
-                          constraints: BoxConstraints(
-                            minHeight: height * 0.8,
-                          ),
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: Text(
-                              "Click on + button to start session",
-                              textScaleFactor: 1.4,
-                            ),
-                          ),
-                        )),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: StreamBuilder<File>(
@@ -125,10 +116,17 @@ class _HomePageState extends State<HomePage> {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           print("Image Data is ${snapshot.data}");
-                          return Image(
-                            image: FileImage(
-                              File(
-                                snapshot.data!.path,
+                          return SizedBox(
+                            height: height * 0.3,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image(
+                                fit: BoxFit.cover,
+                                image: FileImage(
+                                  File(
+                                    snapshot.data!.path,
+                                  ),
+                                ),
                               ),
                             ),
                           );
