@@ -31,6 +31,11 @@ Moqeet ul Hassan  | [Moqeet ul Hassan](https://github.com/MoqeetUlHassan)
 
 #### SigninScreen
 
+img[src~="../acumenmobile/screenshot/SigninScreen.jpeg"] {
+   width:150px;
+   height:100px;
+}
+
 ![Sign in Screen](../acumenmobile/screenshot/SigninScreen.jpeg)
 
 #### SignupScreen
