@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:image_picker/image_picker.dart';
 
 Future<List<Face>> detectFaces({required InputImage inputImage}) async {
   final faceDetector = GoogleMlKit.vision.faceDetector(FaceDetectorOptions(
