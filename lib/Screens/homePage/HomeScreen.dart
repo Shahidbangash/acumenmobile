@@ -2,6 +2,8 @@
 import 'dart:io';
 
 import 'package:acumenmobile/Routes/routesConstants.dart';
+import 'package:acumenmobile/Screens/HistoryPage/ViewHistoryPage.dart';
+import 'package:acumenmobile/Screens/NotificationScreen/ViewNotification.dart';
 import 'package:acumenmobile/Screens/ProfileViewPage/ViewProfileScreen.dart';
 import 'package:acumenmobile/Screens/homePage/MainScreenView.dart';
 import 'package:acumenmobile/Theme/colors.dart';
@@ -31,8 +33,8 @@ class _HomePageState extends State<HomePage> {
   final scafoldKey = GlobalKey<NavigatorState>();
   List<Widget> widgetOptions = [
     MainPageScreen(),
-    ProfileView(),
-    ProfileView(),
+    ViewHistoryScreen(),
+    ViewNotificationScreen(),
     ProfileView(),
   ];
   int selectedIndex = 0;

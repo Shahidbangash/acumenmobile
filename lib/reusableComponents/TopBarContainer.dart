@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 class TopBarDecoration extends StatelessWidget {
   final String? title;
   final Color? backgroundColor;
+  final Widget widget;
   const TopBarDecoration({
     Key? key,
+    required this.widget,
     this.backgroundColor,
     this.title,
   }) : super(key: key);
@@ -15,8 +17,9 @@ class TopBarDecoration extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.elliptical(50, 27),
-          bottomRight: Radius.elliptical(50, 27),
+          bottomLeft: Radius.elliptical(50, 60),
+          // bottomRight: Radius.elliptical(100, 100),
+          bottomRight: Radius.elliptical(50, 60),
         ),
         boxShadow: [
           BoxShadow(
@@ -29,10 +32,12 @@ class TopBarDecoration extends StatelessWidget {
       ),
       width: double.infinity,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Padding(
             padding: EdgeInsets.only(
               bottom: 10,
+              top: 10,
             ),
             child: Text(
               this.title ?? "",
@@ -46,19 +51,7 @@ class TopBarDecoration extends StatelessWidget {
           Divider(
             color: Color(0xFFB0F3CB),
           ),
-          // Padding(
-          //   padding: EdgeInsets.only(top: 12.0),
-          //   child: Center(
-          //     child: Text(
-          //       "Profile Screen",
-          //       style: TextStyle(
-          //         fontSize: 17,
-          //         color: Colors.white,
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          // StreamBuilder<List<Medicine>>(
+          this.widget
         ],
       ),
     );
