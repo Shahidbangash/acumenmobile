@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
 
-detectFaces({required InputImage inputImage}) async {
+Future<List<Face>> detectFaces({required InputImage inputImage}) async {
   final faceDetector = GoogleMlKit.vision.faceDetector(FaceDetectorOptions(
     enableClassification: true,
     enableContours: true,
@@ -17,5 +17,5 @@ detectFaces({required InputImage inputImage}) async {
     print("Face smilling ${face.smilingProbability}");
     print("Face ${face.trackingId}");
   });
-  return faces[0].smilingProbability;
+  return faces;
 }

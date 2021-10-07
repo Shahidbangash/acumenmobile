@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:acumenmobile/Theme/colors.dart';
 import 'package:acumenmobile/reusableComponents/confirmationDialog.dart';
 import 'package:acumenmobile/reusableComponents/drawer.dart';
+import 'package:acumenmobile/reusableComponents/rectanglePainter.dart';
+import 'package:acumenmobile/reusableFunction/calculateSmile.dart';
 import 'package:acumenmobile/reusableFunction/createImageStream.dart';
 import 'package:acumenmobile/reusableFunction/detectFace.dart';
 import 'package:acumenmobile/utils/const.dart';
@@ -25,7 +27,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // final barcodeScanner = GoogleMlKit.vision.barcodeScanner();
 // final digitalInkRecogniser = GoogleMlKit.vision.digitalInkRecogniser();
-  final faceDetector = GoogleMlKit.vision.faceDetector();
+  final faceDetector = GoogleMlKit.vision.faceDetector(FaceDetectorOptions(
+    enableTracking: true,
+    enableClassification: true,
+    enableLandmarks: true,
+    mode: FaceDetectorMode.accurate,
+  ));
   final imageLabeler = GoogleMlKit.vision.imageLabeler();
   // InputImage? inputImage;
   Stream<File>? imagesStream;
@@ -37,6 +44,10 @@ class _HomePageState extends State<HomePage> {
     classifyObjects: true,
     trackMutipleObjects: true,
   ));
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void pickImage({ImageSource imageSource = ImageSource.gallery}) {
     ImagePicker()
@@ -140,6 +151,7 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 SizedBox(
                                   height: height * 0.3,
+                                  width: width,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(20),
                                     child: Image(
@@ -154,7 +166,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 // Result of image will be here
 
-                                FutureBuilder(
+                                FutureBuilder<List<Face>>(
                                   future: detectFaces(
                                     inputImage: InputImage.fromFilePath(
                                       snapshot.data!.path,
@@ -162,11 +174,93 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   builder: (context, faceResult) {
                                     if (faceResult.hasData) {
-                                      return Container(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          faceResult.data.toString(),
-                                        ),
+                                      if (faceResult.data!.length == 0) {
+                                        return Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            faceResult.data.toString(),
+                                          ),
+                                        );
+                                      }
+                                      return Flex(
+                                        direction: Axis.vertical,
+                                        children: faceResult.data!.map(
+                                          (face) {
+                                            return Container(
+                                              child: Card(
+                                                child: Flex(
+                                                  direction: Axis.vertical,
+                                                  children: [
+                                                    Container(
+                                                      padding:
+                                                          EdgeInsets.all(10),
+                                                      width: width,
+                                                      child: Wrap(
+                                                        children: [
+                                                          Text(
+                                                              "Face Bounding Position"),
+                                                          Text(
+                                                            face.boundingBox
+                                                                .toString(),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      padding:
+                                                          EdgeInsets.all(10),
+                                                      width: width,
+                                                      child: Wrap(
+                                                        children: [
+                                                          Text("Emotion: "),
+                                                          Text(
+                                                            face.smilingProbability !=
+                                                                    null
+                                                                ? calculateSmile(
+                                                                    smilingProbability:
+                                                                        face.smilingProbability)
+                                                                : "",
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Center(
+                                                      child: Container(
+                                                        color: Colors.white,
+                                                        width: 300,
+                                                        height: 300,
+                                                        child: CustomPaint(
+                                                          painter:
+                                                              RectanglePainter(
+                                                            rect: face
+                                                                .boundingBox,
+                                                            color: Colors.black,
+                                                          ),
+                                                          child: Text(
+                                                            "Custom Paint",
+                                                            style: TextStyle(
+                                                              fontSize: 30,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .italic,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ).toList(),
+                                        // Container(
+                                        //   padding: const EdgeInsets.all(8.0),
+                                        //   child: Text(
+                                        //     faceResult.data.toString(),
+                                        //   ),
+                                        // ),
+                                        // ],
                                       );
                                     } else {
                                       return Padding(
@@ -182,7 +276,15 @@ class _HomePageState extends State<HomePage> {
                             );
                           } else {
                             return Container(
-                              child: Text("No video Selected Yet"),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: Text(
+                                    "No Media Selected Yet",
+                                    textScaleFactor: 1.4,
+                                  ),
+                                ),
+                              ),
                             );
                           }
                         },
