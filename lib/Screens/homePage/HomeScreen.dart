@@ -166,12 +166,12 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 // Result of image will be here
 
-                                FutureBuilder<List<Face>>(
-                                  future: detectFaces(
+                                StreamBuilder<List<Face>>(
+                                  stream: detectFaces(
                                     inputImage: InputImage.fromFilePath(
                                       snapshot.data!.path,
                                     ),
-                                  ),
+                                  ).asStream(),
                                   builder: (context, faceResult) {
                                     if (faceResult.hasData) {
                                       if (faceResult.data!.length == 0) {
@@ -198,7 +198,8 @@ class _HomePageState extends State<HomePage> {
                                                       child: Wrap(
                                                         children: [
                                                           Text(
-                                                              "Face Bounding Position"),
+                                                            "Face Bounding Position",
+                                                          ),
                                                           Text(
                                                             face.boundingBox
                                                                 .toString(),
@@ -218,7 +219,8 @@ class _HomePageState extends State<HomePage> {
                                                                     null
                                                                 ? calculateSmile(
                                                                     smilingProbability:
-                                                                        face.smilingProbability)
+                                                                        face.smilingProbability,
+                                                                  )
                                                                 : "",
                                                           ),
                                                         ],
