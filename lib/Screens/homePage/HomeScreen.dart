@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      color: Colors.black,
+      color: primaryColorAndPrimaryButtonColor,
       onRefresh: () async {
         Navigator.pop(context);
         Navigator.push(
@@ -52,7 +52,8 @@ class _HomePageState extends State<HomePage> {
         );
       },
       child: Container(
-        color: backgroundColor,
+        // color: background
+        color: primaryColorAndPrimaryButtonColor,
         child: SafeArea(
           child: Scaffold(
             key: scafoldKey,

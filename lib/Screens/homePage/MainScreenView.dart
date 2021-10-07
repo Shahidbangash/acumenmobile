@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:acumenmobile/Screens/homePage/HomeScreen.dart';
 import 'package:acumenmobile/Theme/colors.dart';
 import 'package:acumenmobile/reusableComponents/homePageCard.dart';
+import 'package:acumenmobile/reusableComponents/primaryButton.dart';
 import 'package:acumenmobile/reusableComponents/rectanglePainter.dart';
 import 'package:acumenmobile/reusableFunction/calculateSmile.dart';
 import 'package:acumenmobile/reusableFunction/createImageStream.dart';
@@ -187,8 +189,8 @@ class _MainPageScreenState extends State<MainPageScreen> {
                                             Center(
                                               child: Container(
                                                 color: Colors.white,
-                                                width: 300,
-                                                height: 300,
+                                                // width: 300,
+                                                // height: 300,
                                                 child: CustomPaint(
                                                   painter: RectanglePainter(
                                                     rect: face.boundingBox,
@@ -204,20 +206,13 @@ class _MainPageScreenState extends State<MainPageScreen> {
                                                   ),
                                                 ),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
                                     );
                                   },
                                 ).toList(),
-                                // Container(
-                                //   padding: const EdgeInsets.all(8.0),
-                                //   child: Text(
-                                //     faceResult.data.toString(),
-                                //   ),
-                                // ),
-                                // ],
                               );
                             } else {
                               return Padding(
@@ -225,6 +220,15 @@ class _MainPageScreenState extends State<MainPageScreen> {
                                 child: CircularProgressIndicator(),
                               );
                             }
+                          },
+                        ),
+                        PrimaryButton(
+                          text: "Reload Page ?",
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => HomePage(),
+                            ));
                           },
                         ),
 
@@ -279,13 +283,27 @@ class _MainPageScreenState extends State<MainPageScreen> {
                                     title: "Gallery Image",
                                   ),
                                 ),
-                                HomePageCard(
-                                  iconData: CupertinoIcons.camera,
-                                  title: "Camera Image",
+                                InkWell(
+                                  onTap: () {
+                                    pickImage(
+                                      imageSource: ImageSource.camera,
+                                    );
+                                  },
+                                  child: HomePageCard(
+                                    iconData: CupertinoIcons.camera,
+                                    title: "Camera Image",
+                                  ),
                                 ),
-                                HomePageCard(
-                                  iconData: CupertinoIcons.video_camera,
-                                  title: "Gallery Video",
+                                InkWell(
+                                  onTap: () {
+                                    pickVideo(
+                                      imageSource: ImageSource.gallery,
+                                    );
+                                  },
+                                  child: HomePageCard(
+                                    iconData: CupertinoIcons.video_camera,
+                                    title: "Gallery Video",
+                                  ),
                                 ),
                               ],
                             ),
