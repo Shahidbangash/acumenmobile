@@ -49,7 +49,8 @@ class TopBarDecoration extends StatelessWidget {
             ),
           ),
           Divider(
-            color: Color(0xFFB0F3CB),
+            color: white,
+            thickness: 2,
           ),
           this.widget
         ],
