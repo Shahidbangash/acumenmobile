@@ -104,7 +104,6 @@ class _MainPageScreenState extends State<MainPageScreen> {
                 stream: imagesStream,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    print("Image Data is ${snapshot.data}");
                     detectFaces(
                       inputImage: InputImage.fromFilePath(
                         snapshot.data!.path,
@@ -237,7 +236,7 @@ class _MainPageScreenState extends State<MainPageScreen> {
                     );
                   } else {
                     return Container(
-                      height: height * 0.32,
+                      height: 300,
                       padding: const EdgeInsets.all(8.0),
                       child: Flex(
                         direction: Axis.vertical,

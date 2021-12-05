@@ -1,5 +1,7 @@
 import 'package:acumenmobile/Theme/colors.dart';
 import 'package:acumenmobile/reusableFunction/FirebaseAuthentication.dart';
+import 'package:acumenmobile/utils/const.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -64,4 +66,36 @@ class CustomDrawer extends StatelessWidget {
       ),
     );
   }
+}
+
+List<Widget> registeredUserListTile() {
+  return [
+    getCurrentUser()!.emailVerified == false
+        ? ListTile(
+            leading: Icon(Icons.verified_user),
+            title: Text("Verify Email"),
+            onTap: () {
+              FirebaseAuth.instance.currentUser!
+                  .sendEmailVerification()
+                  .then((value) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                    "We have sent an email for verification",
+                  ),
+                ));
+              });
+            },
+          )
+        : ListTile(
+            leading: Icon(Icons.verified_user),
+            title: Text("Email Verified"),
+          ),
+    ListTile(
+      leading: Icon(Icons.exit_to_app),
+      title: Text("Log out"),
+      onTap: () {
+        logOut();
+      },
+    ),
+  ];
 }
