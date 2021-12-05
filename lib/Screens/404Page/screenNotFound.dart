@@ -13,7 +13,7 @@ class PageNotFoundScreen extends StatelessWidget {
         children: [
           Center(
             child: Text(
-              "The Screen you request does not found",
+              "The Screen you request does not exist",
             ),
           )
         ],

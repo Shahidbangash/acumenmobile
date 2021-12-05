@@ -10,3 +10,6 @@ void goToMainScreen() {
   Navigator.of(navigatorKey!.currentState!.context)
       .pushNamedAndRemoveUntil(homePageRoute, (route) => false);
 }
+
+
+// TODO: fix login issue
