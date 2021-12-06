@@ -20,7 +20,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: navigatorKey,
-      title: 'Acumen FYP Mobile',
+      debugShowCheckedModeBanner: false,
+
+      title: 'Accumen FYP Mobile',
       theme:
           appTheme, // this theme can be customized inside theme folder .. check out apptheme.dart for customization
       onGenerateRoute: CustomRouter.generatedRoute,

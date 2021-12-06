@@ -1,47 +1,47 @@
 {
-    "project_info": {
-      "project_number": "413105521992",
-      "project_id": "acumen-9752f",
-      "storage_bucket": "acumen-9752f.appspot.com"
-    },
-    "client": [
-      {
-        "client_info": {
-          "mobilesdk_app_id": "1:413105521992:android:a19d313c8c7248392bdf7d",
-          "android_client_info": {
-            "package_name": "com.example.acumenmobile"
+  "project_info": {
+    "project_number": "982412180494",
+    "project_id": "acumenfyp",
+    "storage_bucket": "acumenfyp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982412180494:android:325e946179e33427bad05f",
+        "android_client_info": {
+          "package_name": "com.example.acumenmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "982412180494-c45hiqvec4nh602k56pstactek4826k2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.acumenmobile",
+            "certificate_hash": "b4489baae48a386f77c7ee9b87028280b3c64f28"
           }
         },
-        "oauth_client": [
-          {
-            "client_id": "413105521992-bsmqkr5g9p6hqusnrj1jdr1a9qeqvueo.apps.googleusercontent.com",
-            "client_type": 1,
-            "android_info": {
-              "package_name": "com.example.acumenmobile",
-              "certificate_hash": "b4489baae48a386f77c7ee9b87028280b3c64f28"
+        {
+          "client_id": "982412180494-8efe0srvb06vtl7j0jq9i66urdjnh5h2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlhCAFVeq5Msn0P-7JLCU1Ek5kBbzghDQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "982412180494-8efe0srvb06vtl7j0jq9i66urdjnh5h2.apps.googleusercontent.com",
+              "client_type": 3
             }
-          },
-          {
-            "client_id": "413105521992-j3ai6tio3tf863j7urnar50rldgin26b.apps.googleusercontent.com",
-            "client_type": 3
-          }
-        ],
-        "api_key": [
-          {
-            "current_key": "AIzaSyAciZ4PuCMQn6Tuza-Ldn1AVTeZSZp3C7Q"
-          }
-        ],
-        "services": {
-          "appinvite_service": {
-            "other_platform_oauth_client": [
-              {
-                "client_id": "413105521992-j3ai6tio3tf863j7urnar50rldgin26b.apps.googleusercontent.com",
-                "client_type": 3
-              }
-            ]
-          }
+          ]
         }
       }
-    ],
-    "configuration_version": "1"
-  }
+    }
+  ],
+  "configuration_version": "1"
+}
