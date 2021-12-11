@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
 
+/// Content OF Home SCreen will be displayed in this Page
 class MainPageScreen extends StatefulWidget {
   MainPageScreen({Key? key}) : super(key: key);
 
@@ -42,6 +43,7 @@ class _MainPageScreenState extends State<MainPageScreen> {
     classifyObjects: true,
     trackMutipleObjects: true,
   ));
+
   @override
   void initState() {
     super.initState();
@@ -96,225 +98,275 @@ class _MainPageScreenState extends State<MainPageScreen> {
       height: height,
       color: Color(0xFFD8E3E7),
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: StreamBuilder<File>(
-                stream: imagesStream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    detectFaces(
-                      inputImage: InputImage.fromFilePath(
-                        snapshot.data!.path,
-                      ),
-                    );
-                    return Column(
-                      children: [
-                        SizedBox(
-                          height: height * 0.3,
-                          width: width,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image(
-                              fit: BoxFit.cover,
-                              image: FileImage(
-                                File(
-                                  snapshot.data!.path,
+        child: SizedBox(
+          height: height * 0.7,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: StreamBuilder<File>(
+                  stream: imagesStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      detectFaces(
+                        inputImage: InputImage.fromFilePath(
+                          snapshot.data!.path,
+                        ),
+                      );
+                      return Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          SizedBox(
+                            height: 300,
+                            width: width,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image(
+                                fit: BoxFit.cover,
+                                image: FileImage(
+                                  File(
+                                    snapshot.data!.path,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        // Result of image will be here
+                          // Result of image will be here
 
-                        StreamBuilder<List<Face>>(
-                          stream: detectFaces(
-                            inputImage: InputImage.fromFilePath(
-                              snapshot.data!.path,
-                            ),
-                          ).asStream(),
-                          builder: (context, faceResult) {
-                            if (faceResult.hasData) {
-                              if (faceResult.data!.length == 0) {
-                                return Container(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    faceResult.data.toString(),
-                                  ),
-                                );
-                              }
-                              return Flex(
-                                direction: Axis.vertical,
-                                children: faceResult.data!.map(
-                                  (face) {
+                          Positioned(
+                            top: 0,
+                            left: 0,
+                            child: StreamBuilder<List<Face>>(
+                              stream: detectFaces(
+                                inputImage: InputImage.fromFilePath(
+                                  snapshot.data!.path,
+                                ),
+                              ).asStream(),
+                              builder: (context, faceResult) {
+                                if (faceResult.hasData) {
+                                  if (faceResult.data!.length == 0) {
                                     return Container(
-                                      child: Card(
-                                        child: Flex(
-                                          direction: Axis.vertical,
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.all(10),
-                                              width: width,
-                                              child: Wrap(
-                                                children: [
-                                                  Text(
-                                                    "Face Bounding Position",
-                                                  ),
-                                                  Text(
-                                                    face.boundingBox.toString(),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(10),
-                                              width: width,
-                                              child: Wrap(
-                                                children: [
-                                                  Text("Emotion: "),
-                                                  Text(
-                                                    face.smilingProbability !=
-                                                            null
-                                                        ? calculateSmile(
-                                                            smilingProbability:
-                                                                face.smilingProbability,
-                                                          )
-                                                        : "",
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Center(
-                                              child: Container(
-                                                color: Colors.white,
-                                                // width: 300,
-                                                // height: 300,
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        faceResult.data.toString(),
+                                      ),
+                                    );
+                                  }
+                                  return Flex(
+                                    direction: Axis.vertical,
+                                    children: faceResult.data!.map(
+                                      (face) {
+                                        return Container(
+                                          width: width,
+                                          height: 300,
+                                          child: Stack(
+                                            // direction: Axis.vertical,
+                                            children: [
+                                              Positioned(
+                                                top: face.boundingBox.top,
+                                                left: face.boundingBox.left,
+                                                // color: Colors.white,
                                                 child: CustomPaint(
                                                   painter: RectanglePainter(
                                                     rect: face.boundingBox,
-                                                    color: Colors.black,
+                                                    color: Colors.redAccent,
+                                                    left: face.boundingBox.left,
                                                   ),
-                                                  child: Text(
-                                                    "Custom Paint",
-                                                    style: TextStyle(
-                                                      fontSize: 30,
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                    ),
+                                                  child: SizedBox(
+                                                    width:
+                                                        face.boundingBox.width,
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ).toList(),
+                                  );
+                                } else {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+
+                          Positioned(
+                            bottom: -120,
+                            child: StreamBuilder<List<Face>>(
+                              stream: detectFaces(
+                                inputImage: InputImage.fromFilePath(
+                                  snapshot.data!.path,
+                                ),
+                              ).asStream(),
+                              builder: (context, faceResult) {
+                                if (faceResult.hasData) {
+                                  if (faceResult.data!.length == 0) {
+                                    return Container(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        faceResult.data.toString(),
                                       ),
                                     );
-                                  },
-                                ).toList(),
-                              );
-                            } else {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                          },
-                        ),
-                        PrimaryButton(
-                          text: "Reload Page ?",
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => HomePage(),
-                            ));
-                          },
-                        ),
+                                  }
+                                  return Flex(
+                                    direction: Axis.vertical,
+                                    children: faceResult.data!.map(
+                                      (face) {
+                                        return Container(
+                                          width: width * 0.9,
+                                          child: Card(
+                                            child: Flex(
+                                              direction: Axis.vertical,
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  width: width,
+                                                  child: Wrap(
+                                                    children: [
+                                                      Text(
+                                                        "Face Bounding Position",
+                                                      ),
+                                                      Text(
+                                                        face.boundingBox
+                                                            .toString(),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  width: width,
+                                                  child: Wrap(
+                                                    children: [
+                                                      Text("Emotion: "),
+                                                      Text(
+                                                        face.smilingProbability !=
+                                                                null
+                                                            ? calculateSmile(
+                                                                smilingProbability:
+                                                                    face.smilingProbability,
+                                                              )
+                                                            : "",
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ).toList(),
+                                  );
+                                } else {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
 
-                        // Result of image ends here
-                      ],
-                    );
-                  } else {
-                    return Container(
-                      height: 300,
-                      padding: const EdgeInsets.all(8.0),
-                      child: Flex(
-                        direction: Axis.vertical,
-                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "Welcome to Acumen",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 22,
-                                color: primaryColorAndPrimaryButtonColor,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "Get Your Expression done in one tap",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: GridView.count(
-                              mainAxisSpacing: 15,
-                              crossAxisSpacing: 15,
-                              scrollDirection: Axis.horizontal,
-                              crossAxisCount: 1,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    pickImage(
-                                      imageSource: ImageSource.gallery,
-                                    );
-                                  },
-                                  child: HomePageCard(
-                                    iconData: CupertinoIcons.photo,
-                                    title: "Gallery Image",
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    pickImage(
-                                      imageSource: ImageSource.camera,
-                                    );
-                                  },
-                                  child: HomePageCard(
-                                    iconData: CupertinoIcons.camera,
-                                    title: "Camera Image",
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    pickVideo(
-                                      imageSource: ImageSource.gallery,
-                                    );
-                                  },
-                                  child: HomePageCard(
-                                    iconData: CupertinoIcons.video_camera,
-                                    title: "Gallery Video",
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
+                          // Result of image ends here
                         ],
-                      ),
-                    );
-                  }
+                      );
+                    } else {
+                      return Container(
+                        height: 300,
+                        padding: const EdgeInsets.all(8.0),
+                        child: Flex(
+                          direction: Axis.vertical,
+                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Welcome to Acumen",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 22,
+                                  color: primaryColorAndPrimaryButtonColor,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Get Your Expression done in one tap",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: GridView.count(
+                                mainAxisSpacing: 15,
+                                crossAxisSpacing: 15,
+                                scrollDirection: Axis.horizontal,
+                                crossAxisCount: 1,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      pickImage(
+                                        imageSource: ImageSource.gallery,
+                                      );
+                                    },
+                                    child: HomePageCard(
+                                      iconData: CupertinoIcons.photo,
+                                      title: "Gallery Image",
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      pickImage(
+                                        imageSource: ImageSource.camera,
+                                      );
+                                    },
+                                    child: HomePageCard(
+                                      iconData: CupertinoIcons.camera,
+                                      title: "Camera Image",
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      pickVideo(
+                                        imageSource: ImageSource.gallery,
+                                      );
+                                    },
+                                    child: HomePageCard(
+                                      iconData: CupertinoIcons.video_camera,
+                                      title: "Gallery Video",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ),
+              Spacer(),
+              PrimaryButton(
+                text: "Reload Page ?",
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => HomePage(),
+                  ));
                 },
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );
