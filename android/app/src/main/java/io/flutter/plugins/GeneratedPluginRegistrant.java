@@ -72,5 +72,10 @@ public final class GeneratedPluginRegistrant {
     } catch(Exception e) {
       Log.e(TAG, "Error registering plugin path_provider, io.flutter.plugins.pathprovider.PathProviderPlugin", e);
     }
+    try {
+      sq.flutter.tflite.TflitePlugin.registerWith(shimPluginRegistry.registrarFor("sq.flutter.tflite.TflitePlugin"));
+    } catch(Exception e) {
+      Log.e(TAG, "Error registering plugin tflite, sq.flutter.tflite.TflitePlugin", e);
+    }
   }
 }

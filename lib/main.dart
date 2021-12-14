@@ -2,9 +2,10 @@ import 'package:acumenmobile/Routes/routesConstants.dart';
 import 'package:acumenmobile/Theme/appTheme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
+// import 'package:camera/camera.dart';
 import 'Routes/routeGenerator.dart';
 
+// List<Camera>
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp().then((value) {
