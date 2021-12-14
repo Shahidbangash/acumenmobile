@@ -1,0 +1,5 @@
+0 Angry
+1 Happy and Smiling
+2 Aggressive
+3 Thinking
+4 Emotional

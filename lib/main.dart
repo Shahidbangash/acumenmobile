@@ -2,9 +2,10 @@ import 'package:acumenmobile/Routes/routesConstants.dart';
 import 'package:acumenmobile/Theme/appTheme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
+// import 'package:camera/camera.dart';
 import 'Routes/routeGenerator.dart';
 
+// List<Camera>
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp().then((value) {
@@ -20,7 +21,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: navigatorKey,
-      title: 'Acumen FYP Mobile',
+      debugShowCheckedModeBanner: false,
+
+      title: 'Accumen FYP Mobile',
       theme:
           appTheme, // this theme can be customized inside theme folder .. check out apptheme.dart for customization
       onGenerateRoute: CustomRouter.generatedRoute,
