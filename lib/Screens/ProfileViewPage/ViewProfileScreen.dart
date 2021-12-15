@@ -1,11 +1,24 @@
 import 'package:acumenmobile/Theme/colors.dart';
 import 'package:acumenmobile/reusableComponents/TopBarContainer.dart';
+import 'package:acumenmobile/reusableComponents/customTextFormField.dart';
+import 'package:acumenmobile/reusableComponents/primaryButton.dart';
+import 'package:acumenmobile/reusableFunction/uploadImageFirebase.dart';
 import 'package:acumenmobile/utils/const.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
+  @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
   User? user = FirebaseAuth.instance.currentUser;
+  TextEditingController nameController = TextEditingController();
+  bool loading = false;
+  final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,18 +33,41 @@ class ProfileView extends StatelessWidget {
               title: "Profile Screen",
               backgroundColor: primaryColorAndPrimaryButtonColor,
               widget: user != null
-                  ? Center(
-                      child: SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Image(
-                            image: NetworkImage(
-                              user!.photoURL != null
-                                  ? user!.photoURL.toString()
-                                  : placeholerImageLink,
-                            ),
+                  ? InkWell(
+                      onTap: () {
+                        ImagePicker.platform
+                            .pickImage(source: ImageSource.gallery)
+                            .then((value) async {
+                          await uploadImagetFirebase(value!.path)
+                              .then((value) async {
+                            if (value != null) {
+                              await FirebaseAuth.instance.currentUser!
+                                  .updatePhotoURL(value);
+                              FirebaseAuth.instance.currentUser!.reload();
+                              setState(() {});
+                            }
+                          });
+                        });
+                      },
+                      child: Center(
+                        child: SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: StreamBuilder<User?>(
+                                stream:
+                                    FirebaseAuth.instance.authStateChanges(),
+                                builder: (context, snapshot) {
+                                  return Image(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                      snapshot.data!.photoURL != null
+                                          ? snapshot.data!.photoURL.toString()
+                                          : placeholerImageLink,
+                                    ),
+                                  );
+                                }),
                           ),
                         ),
                       ),
@@ -58,53 +94,72 @@ class ProfileView extends StatelessWidget {
 
                         // elevation: 12,
                       ),
-                      child: Flex(
-                        direction: Axis.vertical,
-                        children: [
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Name",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textScaleFactor: 1.7,
-                                ),
-                                Text(
-                                  user != null
-                                      ? user!.displayName ?? "Name not Provided"
-                                      : "",
-                                )
-                              ],
+                      child: Form(
+                        key: formKey,
+                        child: Flex(
+                          direction: Axis.vertical,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 15,
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Email",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textScaleFactor: 1.7,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                "Name",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                Text(
-                                  user != null
-                                      ? user!.email ?? "Email not Provided"
-                                      : "",
-                                )
-                              ],
+                                textScaleFactor: 1.4,
+                              ),
                             ),
-                          ),
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: TextFormFieldCustom(
+                                controller: nameController,
+                                validator: (p0) {
+                                  if (p0!.isEmpty) {
+                                    return " Please Enter Username";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                hintText: user!.displayName ??
+                                    "Update User name here",
+                              ),
+                            ),
+                            loading
+                                ? Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  )
+                                : PrimaryButton(
+                                    text: "Update Profile",
+                                    onTap: () async {
+                                      if (formKey.currentState!.validate()) {
+                                        setState(() {
+                                          loading = true;
+                                        });
+                                        await FirebaseAuth.instance.currentUser!
+                                            .updateDisplayName(
+                                                nameController.text)
+                                            .then((value) {
+                                          setState(() {
+                                            loading = false;
+                                          });
+                                        }).catchError((onError) {
+                                          setState(() {
+                                            loading = false;
+                                          });
+                                        });
+                                      }
+                                    },
+                                  ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
