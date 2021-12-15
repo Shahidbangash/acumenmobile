@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 void showCustomDialog({
   required BuildContext context,
+  required Widget title,
+  required Widget content,
   List<Widget>? buttonList,
 }) {
   showDialog(
@@ -10,32 +12,18 @@ void showCustomDialog({
     barrierDismissible: true,
     builder: (BuildContext context) {
       return AlertDialog(
-          backgroundColor: Colors.transparent,
-          contentPadding: EdgeInsets.zero,
-          elevation: 0.0,
-          actions: [
-            Container(
-              color: Colors.white,
-              width: width,
-              child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("Cancel")),
-            )
-          ],
-
-          // title: Center(child: Text("Evaluation our APP")),
-          content: SizedBox(
-            width: width,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: buttonList!.map(
-                  (e) {
-                    return e;
-                  },
-                ).toList()),
-          ));
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+        // backgroundColor: Colors.transparent,
+        // contentPadding: EdgeInsets.zero,
+        elevation: 0.0,
+        actions: buttonList!.map(
+          (e) {
+            return e;
+          },
+        ).toList(),
+        title: title,
+        content: content,
+      );
     },
   );
 }

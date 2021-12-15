@@ -1,4 +1,6 @@
+import 'package:acumenmobile/Routes/goToRoutes.dart';
 import 'package:acumenmobile/Routes/routesConstants.dart';
+import 'package:acumenmobile/Screens/forgotPasswordPage/forgotPasswordScreen.dart';
 import 'package:acumenmobile/Theme/colors.dart';
 import 'package:acumenmobile/Theme/fontStyles.dart';
 import 'package:acumenmobile/reusableComponents/customTextFormField.dart';
@@ -6,6 +8,7 @@ import 'package:acumenmobile/reusableComponents/primaryButton.dart';
 import 'package:acumenmobile/reusableComponents/validator.dart';
 import 'package:acumenmobile/reusableFunction/FirebaseAuthentication.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class LoginScreen extends StatefulWidget {
   final VoidCallback?
@@ -40,7 +43,7 @@ class LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: backgroundColor,
+        backgroundColor: primaryColorAndPrimaryButtonColor,
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -51,21 +54,6 @@ class LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment
                 .spaceAround, // auto space between item based on the height
             children: [
-              // Center(
-              //   child: InkWell(
-              //     onTap: () {
-              //       navigatorKey!.currentState!.pushNamedAndRemoveUntil(
-              //           signupPageRoute, (route) => false);
-              //     },
-              //     child: SizedBox(
-              //       width: 100,
-              //       height: 100,
-              //       child: SvgPicture.asset(
-              //         "assets/Icons/098-sign in.svg",
-              //       ),
-              //     ),
-              //   ),
-              // ),
               Center(
                 child: Container(
                   width: size.width *
@@ -188,6 +176,33 @@ class LoginScreenState extends State<LoginScreen> {
                     ),
                     TextSpan(
                       text: 'Signup',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: primaryColorAndPrimaryButtonColor,
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context)
+                      .pop(); // remove this screen to avoid any route count issue .. as we might have fixed pop in other process
+                  // navigatorKey.currentState.context
+                  Navigator.of(context).push(
+                    tweenNavigation(nextScreen: ForgotPasswordScreen()),
+                  );
+                },
+                child: Text.rich(
+                  TextSpan(children: [
+                    TextSpan(
+                      text: 'Forgot Password ? ',
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'Reset',
                       style: TextStyle(
                         fontSize: 14,
                         color: primaryColorAndPrimaryButtonColor,
