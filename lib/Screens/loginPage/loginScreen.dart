@@ -6,6 +6,7 @@ import 'package:acumenmobile/reusableComponents/primaryButton.dart';
 import 'package:acumenmobile/reusableComponents/validator.dart';
 import 'package:acumenmobile/reusableFunction/FirebaseAuthentication.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class LoginScreen extends StatefulWidget {
   final VoidCallback?
@@ -40,7 +41,7 @@ class LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: backgroundColor,
+        backgroundColor: primaryColorAndPrimaryButtonColor,
         elevation: 0,
       ),
       body: SingleChildScrollView(

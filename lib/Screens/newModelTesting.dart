@@ -72,7 +72,6 @@ class _CustomModelScreenState extends State<CustomModelScreen> {
               RadialBarSeries<ChartComponent, String>(
                 dataSource: chartData,
                 name: "Emotion",
-
                 legendIconType: LegendIconType.diamond,
                 maximumValue: 1.0,
                 radius: '100%',
