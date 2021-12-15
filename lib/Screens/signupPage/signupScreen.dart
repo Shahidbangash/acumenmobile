@@ -37,7 +37,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: backgroundColor,
+        backgroundColor: primaryColorAndPrimaryButtonColor,
         elevation: 0,
       ),
       body: SingleChildScrollView(
