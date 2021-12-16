@@ -35,7 +35,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.white54,
       appBar: AppBar(
         backgroundColor: primaryColorAndPrimaryButtonColor,
         elevation: 0,
@@ -58,12 +58,12 @@ class _SignupScreenState extends State<SignupScreen> {
                     vertical: 48,
                   ),
                   decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(32),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50),
                     boxShadow: [
                       BoxShadow(
-                        blurRadius: 8,
-                        color: dropShadow,
+                        blurRadius: 5,
+                        color: Colors.black,
                       ),
                     ],
                   ),
@@ -137,7 +137,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 child: Center(
                                     child: CircularProgressIndicator(
                                   backgroundColor:
-                                      primaryColorAndPrimaryButtonColor,
+                                      Colors.white,
                                 )),
                               )
                             : PrimaryButton(

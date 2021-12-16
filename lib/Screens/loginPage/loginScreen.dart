@@ -5,6 +5,7 @@ import 'package:acumenmobile/reusableComponents/customTextFormField.dart';
 import 'package:acumenmobile/reusableComponents/primaryButton.dart';
 import 'package:acumenmobile/reusableComponents/validator.dart';
 import 'package:acumenmobile/reusableFunction/FirebaseAuthentication.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -39,7 +40,7 @@ class LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: primaryColorAndPrimaryButtonColor,
         elevation: 0,
@@ -78,11 +79,11 @@ class LoginScreenState extends State<LoginScreen> {
                   ),
                   decoration: BoxDecoration(
                     color: whiteColor,
-                    borderRadius: BorderRadius.circular(32),
+                    borderRadius: BorderRadius.circular(50),
                     boxShadow: [
                       BoxShadow(
-                        blurRadius: 100,
-                        color: dropShadow,
+                        blurRadius: 500,
+                        color: CupertinoColors.black,
                       ),
                     ],
                   ),
