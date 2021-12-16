@@ -129,7 +129,7 @@ class _MainPageScreenState extends State<MainPageScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFFD8E3E7),
+      color: Color(0xFFc6dcfa),
       child: SingleChildScrollView(
         child: Container(
           height: height * 1.6,
@@ -586,7 +586,7 @@ class _MainPageScreenState extends State<MainPageScreen> {
                       );
                     } else {
                       return Container(
-                        height: 300,
+                        height: 600,
                         padding: const EdgeInsets.all(8.0),
                         child: Flex(
                           direction: Axis.vertical,
@@ -594,18 +594,18 @@ class _MainPageScreenState extends State<MainPageScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.only(right: 40.0 ,left : 40.0 ,bottom: 10 ,top :20),
                               child: Text(
                                 "Welcome to Acumen",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 22,
-                                  color: primaryColorAndPrimaryButtonColor,
+                                  fontSize: 32,
+                                  color: Colors.black,
                                 ),
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.only(right: 10.0 ,left : 45.0 ,bottom: 70),
                               child: Text(
                                 "Get Your Expression done in one tap",
                                 style: TextStyle(
@@ -617,8 +617,9 @@ class _MainPageScreenState extends State<MainPageScreen> {
                             Expanded(
                               child: GridView.count(
                                 mainAxisSpacing: 15,
-                                crossAxisSpacing: 15,
-                                scrollDirection: Axis.horizontal,
+                                crossAxisSpacing: 5,
+                                childAspectRatio: 3.0,
+                                scrollDirection: Axis.vertical,
                                 crossAxisCount: 1,
                                 children: [
                                   InkWell(
@@ -686,7 +687,7 @@ class _MainPageScreenState extends State<MainPageScreen> {
               //     );
               //   },
               // ),
-              SizedBox(height: 40),
+              SizedBox(height: 100),
             ],
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:acumenmobile/Theme/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class HomePageCard extends StatelessWidget {
   final String title;
@@ -15,18 +16,19 @@ class HomePageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
+        border: Border.all(color: Colors.black),
+        borderRadius: BorderRadius.circular(45),
         gradient: LinearGradient(
           colors: [
-            Colors.white,
+            Colors.white30,
             Colors.white,
           ],
         ),
       ),
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(1),
       child: Flex(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        direction: Axis.vertical,
+        direction: Axis.horizontal,
         children: [
           Icon(
             this.iconData,

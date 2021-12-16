@@ -11,11 +11,11 @@ import 'package:flutter/material.dart';
 const Color primaryColor =
     Color(0xFF000000); // black color example . we will update it later.
 
-const backgroundColor = Color(0xFFF4F4F4);
-const primaryColorAndPrimaryButtonColor = Color(0xFF024A59);
+const backgroundColor = Color(0xFF999999);
+const primaryColorAndPrimaryButtonColor = Color(0xFF073763);
 const secondaryColor = Color(0xFFD99178);
 const warningColor = Colors.redAccent;
-const whiteColor = Color(0xFFFFFFFF);
+const whiteColor = Color(0xFF999999);
 const dropShadow = Color(0xFF00000014);
 const blackColor = Color(0xFF00000000);
 const black = Colors.black;

@@ -81,7 +81,7 @@ class LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(32),
                     boxShadow: [
                       BoxShadow(
-                        blurRadius: 8,
+                        blurRadius: 100,
                         color: dropShadow,
                       ),
                     ],
