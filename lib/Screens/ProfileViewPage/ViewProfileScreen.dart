@@ -78,7 +78,7 @@ class ProfileView extends StatelessWidget {
                                 ),
                                 Text(
                                   user != null
-                                      ? user!.displayName ?? "Name not Provided"
+                                      ? user!.displayName ?? "Name not avaialble"
                                       : "",
                                 )
                               ],
