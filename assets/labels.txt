@@ -1,5 +1,15 @@
-0 Angry
-1 Happy and Smiling
-2 Aggressive
-3 Thinking
-4 Emotional
+0 angry
+1 annoyed
+2 confused
+3 disgust
+4 enjoying
+5 fear
+6 focus
+7 happy
+8 inattentive
+9 mockery
+10 no expression
+11 no human face
+12 sad
+13 sleepy
+14 surprised

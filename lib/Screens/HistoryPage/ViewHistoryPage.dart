@@ -68,17 +68,15 @@ class _ViewHistoryScreenState extends State<ViewHistoryScreen> {
                               }
                               return Column(
                                 children: snapshot.data!.docs.map((e) {
-                                  var date = e.get('time');
-                                  Timestamp dateTime = e.get('time');
-                                  dateTime.toDate();
+                                  // var date = e.get('time');
+                                  // Timestamp dateTime = e.get('time');
+                                  // dateTime.toDate();
                                   List<ChartComponent> chartCompentList = [];
                                   List<String> labelList = [];
                                   List.from(e.get("data")).forEach((element) {
-                                    print(element);
+                                    // print(element);
                                     chartCompentList.add(ChartComponent(
-                                        name: element['label']
-                                            .toString()
-                                            .substring(2),
+                                        name: element['label'].toString(),
                                         confidence: double.parse(
                                           element['confidence']
                                               .toString()
@@ -113,7 +111,7 @@ class _ViewHistoryScreenState extends State<ViewHistoryScreen> {
                                                       LabelIntersectAction
                                                           .shift,
                                                 ),
-                                                maximumValue: 1.0,
+                                                // maximumValue: 1.0,
                                                 radius: '100%',
                                                 gap: '4%',
                                                 xValueMapper:
@@ -135,7 +133,10 @@ class _ViewHistoryScreenState extends State<ViewHistoryScreen> {
                                                       BorderRadius.circular(
                                                           300),
                                                   child: Image.network(
-                                                    e.get("image"),
+                                                    e.data().containsKey(
+                                                            'image')
+                                                        ? e.get("image")
+                                                        : placeholerImageLink,
                                                     height: 100,
                                                     width: 100,
                                                     fit: BoxFit.cover,
@@ -148,8 +149,11 @@ class _ViewHistoryScreenState extends State<ViewHistoryScreen> {
                                             ),
                                             legend: Legend(
                                               isVisible: true,
-                                              image:
-                                                  NetworkImage(e.get("image")),
+                                              image: NetworkImage(
+                                                e.data().containsKey('image')
+                                                    ? e.get("image")
+                                                    : placeholerImageLink,
+                                              ),
                                               isResponsive: true,
                                               title: LegendTitle(
                                                 text: "Behavior",
@@ -192,6 +196,7 @@ class _ViewHistoryScreenState extends State<ViewHistoryScreen> {
                                                     ]);
                                               },
                                               text: "Delete History",
+                                              textColor: whiteColor,
                                             ),
                                           ),
                                           Padding(
@@ -200,7 +205,11 @@ class _ViewHistoryScreenState extends State<ViewHistoryScreen> {
                                               text: "Generate PDF",
                                               onTap: () {
                                                 generatePDFFromHistory(
-                                                  imageUrl: e.get("image"),
+                                                  imageUrl: e
+                                                          .data()
+                                                          .containsKey('image')
+                                                      ? e.get("image")
+                                                      : placeholerImageLink,
                                                   labelList: labelList,
                                                 );
                                               },

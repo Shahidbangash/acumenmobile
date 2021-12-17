@@ -8,12 +8,14 @@ class TextFormFieldCustom extends StatelessWidget {
   final int? maxLength;
   final AutovalidateMode? autovalidateMode;
   final String? Function(String?)? validator;
+  final String? hintText;
   final TextInputType? keyboardType;
   TextFormFieldCustom({
     Key? key,
     this.controller,
     this.keyboardType,
     this.validator,
+    this.hintText,
     this.obscureText,
     this.maxLength,
     this.autovalidateMode,
@@ -38,13 +40,15 @@ class TextFormFieldCustom extends StatelessWidget {
         keyboardType: this.keyboardType ?? TextInputType.emailAddress,
         controller: this.controller,
         decoration: InputDecoration(
-            focusColor: black,
-            // focusColor: primaryColorAndPrimaryButtonColor,
-            border: InputBorder.none,
-            counterStyle: TextStyle(
-              height: double.minPositive,
-            ),
-            counterText: ""),
+          focusColor: black,
+          // focusColor: primaryColorAndPrimaryButtonColor,
+          border: InputBorder.none,
+          counterStyle: TextStyle(
+            height: double.minPositive,
+          ),
+          counterText: "",
+          hintText: this.hintText,
+        ),
         // inputFormatters: [
         //   LengthLimitingTextInputFormatter(9),
         // ],

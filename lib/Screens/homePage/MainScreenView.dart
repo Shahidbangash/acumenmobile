@@ -586,7 +586,7 @@ class _MainPageScreenState extends State<MainPageScreen> {
                       );
                     } else {
                       return Container(
-                        height: 600,
+                        height: 800,
                         padding: const EdgeInsets.all(8.0),
                         child: Flex(
                           direction: Axis.vertical,
@@ -594,7 +594,8 @@ class _MainPageScreenState extends State<MainPageScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(right: 40.0 ,left : 40.0 ,bottom: 10 ,top :20),
+                              padding: const EdgeInsets.only(
+                                  right: 40.0, left: 40.0, bottom: 10, top: 20),
                               child: Text(
                                 "Welcome to Acumen",
                                 style: TextStyle(
@@ -605,7 +606,8 @@ class _MainPageScreenState extends State<MainPageScreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(right: 10.0 ,left : 45.0 ,bottom: 70),
+                              padding: const EdgeInsets.only(
+                                  right: 10.0, left: 45.0, bottom: 70),
                               child: Text(
                                 "Get Your Expression done in one tap",
                                 style: TextStyle(
