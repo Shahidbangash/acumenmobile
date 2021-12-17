@@ -158,10 +158,9 @@ class _MainPageScreenState extends State<MainPageScreen> {
                             imageListSnapshot.data!.forEach((element) {
                               // dataForFirebase.add(element);
                               imageList.add(ChartComponent(
-                                name: element['label'].toString().substring(2),
-                                confidence: double.parse(element["confidence"]
-                                    .toString()
-                                    .substring(0, 4)),
+                                name: element['label'].toString(),
+                                confidence: double.parse(
+                                    element["confidence"].toString()),
                               ));
                               // imageList.add(ChartComponent(
                               //   name: element['label'],
@@ -202,7 +201,7 @@ class _MainPageScreenState extends State<MainPageScreen> {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      "Confidence Score ${imageListSnapshot.data![0]['confidence'].toString().substring(0, 4)}",
+                                      "Confidence Score ${imageListSnapshot.data![0]['confidence'].toString()}",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -284,7 +283,7 @@ class _MainPageScreenState extends State<MainPageScreen> {
                                         element["label"]
                                                 .toString()
                                                 .substring(2) +
-                                            " ${element["confidence"].toString().substring(2, 4)}%",
+                                            " ${element["confidence"].toString()}",
                                       );
                                     });
                                     PdfOrderedList(
